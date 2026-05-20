@@ -12,12 +12,12 @@ import SwiftData
 @Model class Category {
     var id: UUID = UUID()
     var name: String
-    var icon: String
-    var colorHex: String
+    var emoji: String
     
-    init(name: String, icon: String, colourHex: String) {
+    
+    init(name: String, emoji: String) {
         self.name = name
-        self.icon = icon
-        self.colorHex = colourHex
+        self.emoji = emoji
+       
     }
 }
