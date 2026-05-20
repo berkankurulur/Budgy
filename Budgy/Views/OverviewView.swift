@@ -79,6 +79,24 @@ struct OverviewView: View {
         }
         .padding(.horizontal)
         
+        VStack(spacing: 12){
+            Text("Recents")
+                .font(.title2)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            
+            
+            ExpenseRow(emoji: "🍔", category: "Food", note: "Lunch at cafe", amount: 45.50, date: Date(), isIncome: false)
+
+            ExpenseRow(emoji: "🛍️", category: "Shopping", note: "Clothes", amount: 120.00, date: Date())
+
+            ExpenseRow(emoji: "💰", category: "Salary", note: "Monthly", amount: 3000.00, date: Date(), isIncome: true)
+        }.padding(.horizontal)
+        
+        
+        
+        
         Spacer()
         
         
@@ -108,6 +126,52 @@ struct CategoryCard: View {
     }
 }
     
+
+
+struct ExpenseRow: View {
+    var emoji: String
+    var category: String
+    var note: String
+    var amount: Double
+    var date:  Date
+    var isIncome: Bool = false
+    
+    var body: some View {
+        HStack{
+            Text(emoji)
+                .font(.title)
+                .frame(width: 50, height: 50)
+                .background(Color.gray.opacity(0.2))
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading, spacing: 2){
+                Text(category)
+                    .fontWeight(.semibold)
+                Text(note)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                
+            }
+            
+            Spacer()
+            
+            VStack(alignment: .trailing){
+                Text(isIncome ? "+$\(amount, specifier: "%.2f")" : "-$\(amount, specifier: "%.2f")")
+                    .fontWeight(.semibold)
+                    .foregroundColor(isIncome ? .green : .red)
+                
+                Text(date, format: .dateTime.month(.abbreviated).day())
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            }
+        }
+}
+
+
+
 #Preview {
     OverviewView()
 }
