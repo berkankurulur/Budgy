@@ -11,7 +11,7 @@ import SwiftUI
 struct BudgyApp: App {
     var body: some Scene {
         WindowGroup {
-            OverviewView()
+            ContentView()
         }
     }
 }

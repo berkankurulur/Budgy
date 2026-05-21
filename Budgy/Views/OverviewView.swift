@@ -9,7 +9,8 @@ import SwiftUI
 
 struct OverviewView: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 12){
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12){
             Text("Total Balance")
                 .font(.subheadline)
                 .foregroundColor(.white.opacity(0.8))
@@ -94,13 +95,7 @@ struct OverviewView: View {
             ExpenseRow(emoji: "💰", category: "Salary", note: "Monthly", amount: 3000.00, date: Date(), isIncome: true)
         }.padding(.horizontal)
         
-        
-        
-        
-        Spacer()
-        
-        
-        
+        }
     }
 }
 
