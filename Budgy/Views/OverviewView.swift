@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct OverviewView: View {
+    
+    @State private var showAddExpence = false
+    
     var body: some View {
+        ZStack(alignment: .bottomTrailing){
         ScrollView {
             VStack(alignment: .leading, spacing: 12){
             Text("Total Balance")
@@ -95,14 +99,36 @@ struct OverviewView: View {
             ExpenseRow(emoji: "💰", category: "Salary", note: "Monthly", amount: 3000.00, date: Date(), isIncome: true)
         }.padding(.horizontal)
         
+            }
+            Button {
+                showAddExpence = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .frame(width: 60, height: 60)
+                    .background(Color.blue)
+                    .clipShape(Circle())
+                    .shadow(radius: 4)
+            }                                                                                                        
+        }
+        .padding()
+        
+        .sheet(isPresented: $showAddExpence) {
+            AddExpense()
         }
     }
 }
 
 
+
+
+
 struct CategoryCard: View {
     let emoji: String
     let name: String
+    
+    var isSelected : Bool = false
     
     var body: some View {
         VStack(spacing: 8){
@@ -110,17 +136,19 @@ struct CategoryCard: View {
                 .font(.largeTitle)
             Text(name)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundColor(isSelected ? .white : .secondary)
             
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 16)
-        .background(Color.white)
+        .background(isSelected ? Color.blue : Color.white)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 4, x:0, y:2)
     }
 }
-    
+ 
+
+
 
 
 struct ExpenseRow: View {
