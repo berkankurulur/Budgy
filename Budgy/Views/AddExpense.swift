@@ -11,7 +11,8 @@ struct AddExpense: View {
     
     @State private var amount: String = ""
     @State private var selectedCategory: String = "Food"
-    
+    @State private var note: String = ""
+    @Environment(\.dismiss) private var dismiss
    
     
     var body: some View {
@@ -19,7 +20,7 @@ struct AddExpense: View {
             // 1. HStack — başlık
             HStack {
                 Button {
-                    
+                    dismiss()
                 } label: {
                     Image(systemName: "arrow.left")
                         .font(.title2)
@@ -96,6 +97,34 @@ struct AddExpense: View {
             }
             .padding(.horizontal)
             
+            Text("Description (optional)")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            
+            TextField("What did you spend on", text: $note)
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(12)
+                .padding(.horizontal)
+            
+            
+            Spacer()
+            
+            Button{
+                dismiss()
+            }label: {
+                Text("Add expense")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(12)
+            }
+            .padding(.horizontal)
+
         }
     }
 }
