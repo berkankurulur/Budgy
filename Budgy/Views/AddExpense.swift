@@ -11,10 +11,12 @@ import SwiftData
 struct AddExpense: View {
     
     @State private var amount: String = ""
-    @State private var selectedCategory: String = "Food"
+    @State private var selectedCategory: Category? = nil
     @State private var note: String = ""
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    
+    @Query private var categories : [Category]
     
    
     
@@ -69,34 +71,16 @@ struct AddExpense: View {
             ]
             
             LazyVGrid(columns: columns, spacing: 12) {
-                CategoryCard(emoji: "🍔", name: "Food", isSelected: selectedCategory == "Food")
-                    .onTapGesture {
-                        selectedCategory = "Food"
+                ForEach(categories) { category in
+                    CategoryCard(
+                        emoji: category.emoji,
+                        name: category.name,
+                        isSelected: selectedCategory?.id == category.id
+                    )
+                    .onTapGesture{
+                        selectedCategory = category
                     }
-                    CategoryCard(emoji: "🚗", name: "Transport", isSelected: selectedCategory == "Transport")
-                    .onTapGesture {
-                        selectedCategory = "Transport"
-                    }
-                    CategoryCard(emoji: "🛍️", name: "Shopping", isSelected: selectedCategory == "Shopping")
-                    .onTapGesture {
-                        selectedCategory = "Shopping"
-                    }
-                    CategoryCard(emoji: "🎬", name: "Entertainment", isSelected: selectedCategory == "Entertainment")
-                    .onTapGesture {
-                        selectedCategory = "Entertainment"
-                    }
-                    CategoryCard(emoji: "💡", name: "Bills", isSelected: selectedCategory == "Bills")
-                    .onTapGesture {
-                        selectedCategory = "Bills"
-                    }
-                    CategoryCard(emoji: "⚕️", name: "Health", isSelected: selectedCategory == "Health")
-                    .onTapGesture {
-                        selectedCategory = "Health"
-                    }
-                    CategoryCard(emoji: "📝", name: "Other", isSelected: selectedCategory == "Other")
-                    .onTapGesture {
-                        selectedCategory = "Other"
-                    }
+                }
             }
             .padding(.horizontal)
             
@@ -118,10 +102,13 @@ struct AddExpense: View {
             Button{
                 guard let amountValue = Double(amount) else { return }
                  
-                let newExpense = Expense(amount: amountValue,
+                let newExpense = Expense(
+                amount: amountValue,
                 note: note,
                 date: Date(),
+                category: selectedCategory,
                 isIncome: false)
+                
                 
                 modelContext.insert(newExpense)
                 

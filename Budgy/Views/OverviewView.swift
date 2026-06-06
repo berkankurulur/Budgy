@@ -95,7 +95,7 @@ struct OverviewView: View {
                 .padding(.horizontal)
             
             ForEach(expenses) { expense in
-                ExpenseRow(emoji: "💰", category: "Genel", note: expense.note, amount: expense.amount, date: expense.date, isIncome: expense.isIncome)
+                ExpenseRow(emoji: expense.category?.emoji ?? "💰", category: expense.category?.name ?? "Genel", note: expense.note, amount: expense.amount, date: expense.date, isIncome: expense.isIncome)
                 
             }
             
