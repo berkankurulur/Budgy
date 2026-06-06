@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct BudgyApp: App {
@@ -13,5 +14,6 @@ struct BudgyApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [Expense.self, Category.self])
     }
 }

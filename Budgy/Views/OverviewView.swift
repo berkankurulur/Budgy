@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OverviewView: View {
     
     @State private var showAddExpence = false
+    
+    @Query(sort: \Expense.date, order: .reverse) private var expenses: [Expense]
     
     var body: some View {
         ZStack(alignment: .bottomTrailing){
@@ -91,12 +94,13 @@ struct OverviewView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
             
+            ForEach(expenses) { expense in
+                ExpenseRow(emoji: "💰", category: "Genel", note: expense.note, amount: expense.amount, date: expense.date, isIncome: expense.isIncome)
+                
+            }
             
-            ExpenseRow(emoji: "🍔", category: "Food", note: "Lunch at cafe", amount: 45.50, date: Date(), isIncome: false)
-
-            ExpenseRow(emoji: "🛍️", category: "Shopping", note: "Clothes", amount: 120.00, date: Date())
-
-            ExpenseRow(emoji: "💰", category: "Salary", note: "Monthly", amount: 3000.00, date: Date(), isIncome: true)
+            
+            
         }.padding(.horizontal)
         
             }

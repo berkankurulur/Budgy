@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddExpense: View {
     
@@ -13,6 +14,8 @@ struct AddExpense: View {
     @State private var selectedCategory: String = "Food"
     @State private var note: String = ""
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
    
     
     var body: some View {
@@ -113,7 +116,18 @@ struct AddExpense: View {
             Spacer()
             
             Button{
+                guard let amountValue = Double(amount) else { return }
+                 
+                let newExpense = Expense(amount: amountValue,
+                note: note,
+                date: Date(),
+                isIncome: false)
+                
+                modelContext.insert(newExpense)
+                
                 dismiss()
+                
+                
             }label: {
                 Text("Add expense")
                     .font(.headline)
