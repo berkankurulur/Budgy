@@ -14,6 +14,26 @@ struct OverviewView: View {
     
     @Query(sort: \Expense.date, order: .reverse) private var expenses: [Expense]
     
+    private var totalBalance: Double {
+        let income = expenses.filter { $0.isIncome }.reduce(0) { $0 + $1.amount }
+            let expense = expenses.filter { !$0.isIncome }.reduce(0) { $0 + $1.amount }
+            return income - expense
+        
+    }
+    
+    private var todayTotal: Double {
+        let calendar = Calendar.current
+        return expenses.filter { !$0.isIncome && calendar.isDateInToday($0.date) }
+            .reduce(0) { $0 + $1.amount }
+    }
+    
+    private var thisMonthTotal: Double {
+        let calendar = Calendar.current
+        return expenses.filter { !$0.isIncome && calendar.isDate($0.date, equalTo: Date(), toGranularity: .month) }
+            .reduce(0) { $0 + $1.amount }
+     }
+    
+    
     var body: some View {
         ZStack(alignment: .bottomTrailing){
         ScrollView {
@@ -22,7 +42,7 @@ struct OverviewView: View {
                 .font(.subheadline)
                 .foregroundColor(.white.opacity(0.8))
             
-            Text("190.50")
+                Text("$\(totalBalance, specifier: "%.2f")")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
@@ -33,7 +53,7 @@ struct OverviewView: View {
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.8))
                     
-                    Text("40,50")
+                    Text("$\(todayTotal, specifier: "%.2f")")
                         .font(.headline)
                         .foregroundColor(.white)
                 }
@@ -46,7 +66,7 @@ struct OverviewView: View {
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.8))
                     
-                    Text("190.50")
+                    Text("$\(thisMonthTotal, specifier: "%.2f")")
                         .font(.headline)
                         .foregroundColor(.white)
                 }
